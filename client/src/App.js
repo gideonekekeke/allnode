@@ -4,6 +4,9 @@ import Header from "./Components/Header";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Registration from "./Components/Registration";
 import HomeScreen from "./Components/HomeScreen";
+import Login from "./Components/Login";
+import { Private } from "./Components/Private";
+import DetailedScreen from "./Components/DetailedScreen";
 
 function App() {
 	return (
@@ -11,8 +14,17 @@ function App() {
 			<Router>
 				<Header />
 				<Routes>
-					<Route path='/' element={<HomeScreen />} />
+					<Route
+						path='/'
+						element={
+							<Private>
+								<HomeScreen />
+							</Private>
+						}
+					/>
 					<Route path='/register' element={<Registration />} />
+					<Route path='/login' element={<Login />} />
+					<Route path='/user/:id' element={<DetailedScreen />} />
 				</Routes>
 			</Router>
 		</div>

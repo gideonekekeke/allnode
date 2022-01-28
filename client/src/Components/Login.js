@@ -5,19 +5,11 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 
-const Registration = () => {
+const Login = () => {
 	const [image, setImage] = React.useState("");
 	const [imageDB, setImageDB] = React.useState("");
 
-	const UploadImage = (e) => {
-		const file = e.target.files[0];
-		const fileRef = URL.createObjectURL(file);
-		setImage(fileRef);
-		setImageDB(file);
-	};
-
 	const schema = yup.object().shape({
-		name: yup.string().required("this filed is required"),
 		email: yup.string().required("this filed is required").email(),
 		password: yup.string().required("this filed is required"),
 	});
@@ -32,37 +24,18 @@ const Registration = () => {
 	});
 
 	const onSubmit = handleSubmit(async (val) => {
-		console.log(val);
-		const { name, email, password } = val;
+		// console.log(val);
 
-		const formData = new FormData();
+		const res = await axios.post("http://localhost:9090/signin", val);
 
-		formData.append("userName", name);
-		formData.append("email", email);
-		formData.append("password", password);
-		formData.append("image", imageDB);
+		console.log(res.data.data);
 
-		const config = {
-			headers: {
-				"content-type": "multipart/form-data",
-			},
-		};
-
-		await axios.post("http://localhost:9090/register", formData, config);
-		reset();
-		setImage("");
+		localStorage.setItem("user", JSON.stringify(res.data.data));
 	});
 
 	return (
 		<Container>
 			<Card onSubmit={onSubmit}>
-				<ImagePreview src={image} />
-				<input
-					onChange={UploadImage}
-					accept='image/png, image/jpeg, image/pdf'
-					type='file'
-				/>
-				<input {...register("name")} placeholder='userName' />
 				<input {...register("email")} placeholder='email' />
 				<input {...register("password")} placeholder='password' />
 				<button type='submit'>Submit</button>
@@ -71,7 +44,7 @@ const Registration = () => {
 	);
 };
 
-export default Registration;
+export default Login;
 
 const ImagePreview = styled.img`
 	height: 100px;

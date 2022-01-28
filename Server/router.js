@@ -38,7 +38,7 @@ router.get("/users", async (req, res) => {
 
 //getting user by id
 
-router.get("/user/;id", async (req, res) => {
+router.get("/user/:id", async (req, res) => {
 	try {
 		const getUsers = await userModel.findById(req.params.id, req.body);
 

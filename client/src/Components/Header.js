@@ -1,15 +1,40 @@
-import React from "react";
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
+import { GlobalContext } from "../Global/GlobalContext";
 
 const Header = () => {
+	const { current } = useContext(GlobalContext);
+
 	return (
 		<Container>
-			<Logo>Logo</Logo>
-			<ButtonHold>
-				<button>Register</button>
-				<button>Log in</button>
-				<button>Log out</button>
-			</ButtonHold>
+			<Link
+				style={{ color: "white", textDecoration: "none", fontWeight: "bold" }}
+				to='/'>
+				<Logo>Logo</Logo>
+			</Link>
+			{current ? (
+				<ButtonHold>
+					{" "}
+					<button
+						onClick={() => {
+							localStorage.removeItem("user");
+							window.location.reload();
+						}}>
+						Log out
+					</button>
+				</ButtonHold>
+			) : (
+				<ButtonHold>
+					<Link to='/register'>
+						<button>Register</button>
+					</Link>
+					<Link to='/login'>
+						{" "}
+						<button>Log in</button>
+					</Link>
+				</ButtonHold>
+			)}
 		</Container>
 	);
 };

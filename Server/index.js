@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const port = 9090;
 const url = "mongodb://localhost/shopDB";
 const cors = require("cors");
+const path = require("path");
 
 const app = express();
 
@@ -13,6 +14,8 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/", require("./router"));
+
+app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.listen(port, () => {
 	console.log(`listening on port ${port}`);
